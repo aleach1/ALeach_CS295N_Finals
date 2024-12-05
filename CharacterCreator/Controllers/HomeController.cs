@@ -18,10 +18,17 @@ namespace CharacterCreator.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Characters()
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult NewChar()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
