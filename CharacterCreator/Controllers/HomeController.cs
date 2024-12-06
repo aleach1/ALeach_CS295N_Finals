@@ -30,7 +30,7 @@ namespace CharacterCreator.Controllers
         public IActionResult Filter(string creator, string date)
         {
             var chars = _repo.GetAllChars()
-                .Where(s => creator == null || s.Name == creator)
+                .Where(s => creator == null ||(s.Account != null && s.Account.Username == creator))
                 .Where(s => date == null || DateOnly.FromDateTime(s.DateCreated) == DateOnly.Parse(date))
                 .ToList();
 

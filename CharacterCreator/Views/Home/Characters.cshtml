@@ -7,8 +7,8 @@
 
 <form asp-action="Filter" asp-controller="Home" method="get">
     <div class="form-group">
-        <label name="poster">Character's Creator:</label>
-        <input name="poster" class="form-control p-3" /><br />
+        <label name="creator">Character's Creator:</label>
+        <input name="creator" class="form-control p-3" /><br />
     </div>
     <div class="form-group">
         <label name="date">Date posted: (mm/dd/yy)</label>
@@ -31,6 +31,7 @@
         <p>Physical Description: @character.PhysicalDescription <br></p>
         <p><strong>Posted by:</strong> @(character.Account == null ? "Anonymous" : character.Account.Username) <div class="fst-italic small m-0"> @character.DateCreated.ToShortDateString()</div></p>
     </div>
+    <br/>
 }
 
 <div class="container mt-lg-5">

@@ -38,7 +38,7 @@ namespace CharacterCreator.Data
             return chars;
         }
 
-        //adds a character to the database and returns a positive value if succussful
+        //adds a character to the database and returns a positive value if succussful. Validates user account.
         public int NewChar(Character model)
         {
             if (_context.Users.Find(model.Account.Username).Password == model.Account.Password)
@@ -54,7 +54,7 @@ namespace CharacterCreator.Data
             return _context.SaveChanges();
         }
 
-        //adds a user to the database and returns a positive value if succussful
+        //adds a user to the database and returns a positive value if succussful. Validates unique user so db doesn't crash.
         public int NewUser(User model)
         {
             if (_context.Users.Find(model.Username) == null)
