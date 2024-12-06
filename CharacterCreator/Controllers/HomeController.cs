@@ -1,4 +1,5 @@
-﻿using CharacterCreator.Models;
+﻿using CharacterCreator.Data;
+using CharacterCreator.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,10 +8,11 @@ namespace CharacterCreator.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        ICharacterRepository _repo;
+        public HomeController(ILogger<HomeController> logger, ICharacterRepository repo)
         {
             _logger = logger;
+            _repo = repo;
         }
 
         public IActionResult Index()
@@ -20,13 +22,38 @@ namespace CharacterCreator.Controllers
 
         public IActionResult Characters()
         {
+            var chars = _repo.GetAllChars();
+            return View(chars);
+        }
+
+        [HttpGet]
+        public IActionResult Filter(string creator, string date)
+        {
+            var chars = _repo.GetAllChars()
+                .Where(s => creator == null || s.Name == creator)
+                .Where(s => date == null || DateOnly.FromDateTime(s.DateCreated) == DateOnly.Parse(date))
+                .ToList();
+
+            return View("Characters", chars);
+        }
+
+        public IActionResult NewChar()
+        {
             return View();
         }
 
         [HttpPost]
-        public IActionResult NewChar()
+        public IActionResult NewChar(Character newChar)
         {
-            return View();
+            if (_repo.NewChar(newChar) > 0)
+            {
+                return RedirectToAction("Characters");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "There was an error saving the character.";
+                return View();
+            }
         }
 
 

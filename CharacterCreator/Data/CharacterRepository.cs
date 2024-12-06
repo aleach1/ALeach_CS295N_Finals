@@ -16,7 +16,7 @@ namespace CharacterCreator.Data
         public List<Character> GetAllChars()
         {
             var chars = _context.Characters
-                .Include(character => character.user)
+                .Include(character => character.Account)
                 .ToList<Character>();
             return chars;
         }
@@ -33,7 +33,7 @@ namespace CharacterCreator.Data
         public Character GetCharById(int id)
         {
             var chars = _context.Characters
-              .Where(chars => chars.charId == id)
+              .Where(chars => chars.Id == id)
               .SingleOrDefault();
             return chars;
         }
@@ -41,7 +41,15 @@ namespace CharacterCreator.Data
         //adds a character to the database and returns a positive value if succussful
         public int NewChar(Character model)
         {
-            model.dateCreated = DateTime.Now;
+            if (_context.Users.Find(model.Account.Username).Password == model.Account.Password)
+            {
+                model.Account = _context.Users.Find(model.Account.Username);
+            }
+            else
+            {
+                model.Account = null;
+            }
+            model.DateCreated = DateTime.Now;
             _context.Characters.Add(model);
             return _context.SaveChanges();
         }
@@ -49,8 +57,16 @@ namespace CharacterCreator.Data
         //adds a user to the database and returns a positive value if succussful
         public int NewUser(User model)
         {
-            _context.Users.Add(model);
-            return _context.SaveChanges();
+            if (_context.Users.Find(model.Username) == null)
+            {
+                _context.Users.Add(model);
+                return _context.SaveChanges();
+            }
+            else
+            {
+                return 0;
+            }
+            
         }
     }
 }

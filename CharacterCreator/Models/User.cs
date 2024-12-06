@@ -5,9 +5,9 @@ namespace CharacterCreator.Models
     public class User
     {
         [Key]
-        public string username;
+        public string Username { get; set; }
 
-        public string password;
+        public string Password { get; set; }
 
     }
 }

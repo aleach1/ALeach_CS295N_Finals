@@ -2,26 +2,25 @@
 {
     public class Character
     {
+        public int Id { get; set; }
 
-        public int charId;
+        public string Name { get; set; }
 
-        public string name;
+        public string Backstory { get; set; }
 
-        public string backstory;
+        public string? Motivation { get; set; }
 
-        public string motivation;
+        public string? MoralAlignment { get; set; }
 
-        public string moralAlignment;
+        public int Height { get; set; }
 
-        public int height;
+        public int Weight { get; set; }
 
-        public int weight;
+        public string? PhysicalDescription { get; set; }
 
-        public string physicalDescription;
+        public DateTime DateCreated { get; set; }
 
-        public DateTime dateCreated;
-
-        public User user;
+        public User? Account { get; set; }
 
     }
 }

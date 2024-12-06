@@ -1,12 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CharacterCreator.Data;
+using CharacterCreator.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace CharacterCreator.Controllers
 {
     public class AccountController : Controller
     {
+
+        ICharacterRepository _repo;
+
+        public AccountController(ICharacterRepository repo)
+        {
+            _repo = repo;
+        }
+
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(User newUser)
+        {
+
+            if (_repo.NewUser(newUser) > 0)
+            {
+                return View();
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "There was an error saving the account. Your username may have been invalid.";
+                return View();
+            }
         }
     }
 }
