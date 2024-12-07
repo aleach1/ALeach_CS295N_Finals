@@ -1,3 +1,4 @@
+using CelesteMountain.Data;
 using CharacterCreator.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -35,5 +36,14 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+//get DbContext seed data
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<CharacterCreatorContext>();
+    SeedData.Seed(dbContext);
+
+}
 
 app.Run();

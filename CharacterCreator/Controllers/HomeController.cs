@@ -27,14 +27,41 @@ namespace CharacterCreator.Controllers
         }
 
         [HttpGet]
-        public IActionResult Filter(string creator, string date)
+        public IActionResult Filter(string creator, string sort)
         {
-            var chars = _repo.GetAllChars()
-                .Where(s => creator == null ||(s.Account != null && s.Account.Username == creator))
-                .Where(s => date == null || DateOnly.FromDateTime(s.DateCreated) == DateOnly.Parse(date))
-                .ToList();
+            if (sort == "Name")
+            {
+                var chars = _repo.GetAllChars()
+                    .Where(s => creator == null ||(s.Account != null && s.Account.Username == creator))
+                    .OrderBy(s => s.Name)
+                    .ToList();
+                return View("Characters", chars);
+            }
+            else if (sort == "Date")
+            {
+                var chars = _repo.GetAllChars()
+                    .Where(s => creator == null || (s.Account != null && s.Account.Username == creator))
+                    .OrderBy(s => s.DateCreated)
+                    .ToList();
+                return View("Characters", chars);
+            }
+            else if (sort == "Height")
+            {
+                var chars = _repo.GetAllChars()
+                    .Where(s => creator == null || (s.Account != null && s.Account.Username == creator))
+                    .OrderBy(s => s.Height)
+                    .ToList();
+                return View("Characters", chars);
+            }
+            else
+            {
+                var chars = _repo.GetAllChars()
+                    .Where(s => creator == null || (s.Account != null && s.Account.Username == creator))
+                    .ToList();
+                return View("Characters", chars);
+            }
 
-            return View("Characters", chars);
+
         }
 
         public IActionResult NewChar()

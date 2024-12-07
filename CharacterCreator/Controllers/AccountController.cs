@@ -26,11 +26,14 @@ namespace CharacterCreator.Controllers
 
             if (_repo.NewUser(newUser) > 0)
             {
+                ViewBag.Success = "text-success";
+                ViewBag.Message = "Your account was successfully saved.";
                 return View();
             }
             else
             {
-                ViewBag.ErrorMessage = "There was an error saving the account. Your username may have been invalid.";
+                ViewBag.Success = "text-danger";
+                ViewBag.Message = "There was an error saving the account. Your username may have been invalid.";
                 return View();
             }
         }
